@@ -17,6 +17,11 @@ export const Holder = styled.div`
   align-items: center;
   padding: 20px;
 
+  @media screen and (max-width: 980px) {
+    padding: 10px;
+    width: 100%;
+  }
+
   header {
     h1 {
       font-size: 24px;
@@ -121,13 +126,13 @@ export const Table = styled.table`
 
 export const Status = styled.td`
   strong {
-    background: #dff0df;
+    background: ${props => props.statusColor};
     width: auto;
     max-width: 150px;
     height: 30px;
     padding: 0 10px;
     border-radius: 100px;
-    color: #2ca42b;
+    color: ${props => darken(0.4, props.statusColor)};
     font-weight: bold;
     font-size: 15px;
     display: flex;
@@ -137,7 +142,7 @@ export const Status = styled.td`
     div {
       height: 10px;
       width: 10px;
-      background: #2ca42b;
+      background: ${props => darken(0.4, props.statusColor)};
       border-radius: 5px;
       margin-right: 5px;
     }
@@ -146,29 +151,31 @@ export const Status = styled.td`
 
 export const Action = styled.div`
   position: absolute;
-  background: #fff;
-  padding: 10px;
-  width: 100%;
-  right: calc(50%-120px);
+  width: 100px;
+  right: calc(50%-100px);
   top: calc(50%-30px);
   z-index: 1;
   transition: 1s;
-  width: 240px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
   display: ${props => (!props.visible ? 'none' : '')};
 
   div {
+    width: 240px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
     cursor: pointer;
     color: #aaa;
     display: flex;
-    flex-direction: row;
     align-items: center;
     margin: 0px 5px;
-    padding: 5px;
+    padding: 10px;
     font-size: 14px;
-    & + div {
-      border-top: 1px solid #ddd;
+    width: 100px;
+
+    button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
   }
 `;
@@ -191,5 +198,20 @@ export const NameDiv = styled.td`
     background: #f4effc;
     margin-right: 5px;
     color: #a28fd0;
+  }
+`;
+
+export const Pages = styled.div`
+  margin: 0 auto;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  color: #aaa;
+  cursor: pointer;
+
+  strong {
+    padding: 0 10px;
   }
 `;

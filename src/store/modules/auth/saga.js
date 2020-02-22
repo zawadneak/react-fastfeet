@@ -15,6 +15,8 @@ export function* signIn({ payload }) {
 
     const { token } = response.data;
 
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+
     yield put(signInSuccess(token));
 
     history.push('/deliveries');
