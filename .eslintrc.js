@@ -30,6 +30,7 @@ module.exports = {
     "no-param-reassign": "off",
     "camelcase": "off",
     "no-console": "off",
+    "no-alert": "off"
   },
   settings: {
     "import/resolver": {
