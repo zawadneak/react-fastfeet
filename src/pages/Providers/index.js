@@ -5,17 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { produce } from 'immer';
 import { toast } from 'react-toastify';
 import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { FaTrashAlt, FaPen, FaPlus } from 'react-icons/fa';
+import { FaTrashAlt, FaPen } from 'react-icons/fa';
 import {
   providerRequest,
   providerDeleteRequest,
 } from '~/store/modules/providers/actions';
+import TableHeader from '~/components/TableHeader/index';
 
 import { Container, Holder, Table, Action, NameDiv, Pages } from './styles';
 
 export default function Provider() {
   const providerLoad = useSelector(state => state.providers.providers);
   const [providers, setProviders] = useState([]);
+  const [page, setPage] = useState(1);
+  const [input, setInput] = useState('');
 
   const dispatch = useDispatch();
 
@@ -26,13 +29,6 @@ export default function Provider() {
   useEffect(() => {
     setProviders(providerLoad);
   }, [providerLoad]);
-
-  const reloadAPI = (query, page) => {
-    if (providers.length < 10) {
-      return toast('There are no more pages!');
-    }
-    dispatch(providerRequest(query || null, page || 1));
-  };
 
   const handleActions = ({ id, visible }) => {
     setProviders(
@@ -48,6 +44,27 @@ export default function Provider() {
     );
   };
 
+  const handlePageAdd = () => {
+    if (providers.length < 10) {
+      return toast.info('There are no more pages!');
+    }
+    const pageSwitch = page + 1;
+    setPage(page + 1);
+
+    dispatch(providerRequest(input, pageSwitch));
+  };
+  const handlePageSub = () => {
+    if (page === 1) {
+      return toast.info('This is already the first page!');
+    }
+    const pageSwitch = page - 1;
+    setPage(page - 1);
+
+    console.log(page);
+
+    dispatch(providerRequest(input, pageSwitch));
+  };
+
   const handleDelete = id => {
     // eslint-disable-next-line no-restricted-globals
     const confirmation = confirm(
@@ -59,6 +76,13 @@ export default function Provider() {
     }
   };
 
+  const handleSearch = e => {
+    if (e.key === 'Enter') {
+      dispatch(providerRequest(input, 1));
+    }
+    setInput('');
+  };
+
   return (
     <Container>
       <Holder>
@@ -66,13 +90,10 @@ export default function Provider() {
           <h1>Managing Providers</h1>
         </header>
         <div>
-          <header>
-            <input type="text" placeholder={` Search for a delivery`} />
-            <button type="button">
-              <FaPlus size={15} style={{ marginRight: 10 }} />
-              REGISTER
-            </button>
-          </header>
+          <TableHeader
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => handleSearch(e)}
+          />
           <Table>
             <thead>
               <tr>
@@ -132,9 +153,9 @@ export default function Provider() {
           </Table>
         </div>
         <Pages>
-          <IoIosArrowBack />
-          <strong>1</strong>
-          <IoIosArrowForward />
+          <IoIosArrowBack onClick={handlePageSub} />
+          <strong>{page}</strong>
+          <IoIosArrowForward onClick={handlePageAdd} />
         </Pages>
       </Holder>
     </Container>

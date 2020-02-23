@@ -33,37 +33,6 @@ export const Holder = styled.div`
   div {
     width: 100%;
   }
-
-  div > header {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 10px;
-
-    input {
-      height: 35px;
-      width: 200px;
-      padding: 0px 10px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-    }
-
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 150px;
-      border: 0px;
-      background: #7d40e7;
-      border-radius: 4px;
-      color: #fff;
-      font-weight: bold;
-
-      &:hover {
-        background: ${darken(0.03, '#7d40e7')};
-      }
-    }
-  }
 `;
 
 export const Table = styled.table`
@@ -210,6 +179,11 @@ export const Pages = styled.div`
   font-family: 'Roboto', sans-serif;
   color: #aaa;
   cursor: pointer;
+  transition: 1s;
+
+  :hover {
+    color: black;
+  }
 
   strong {
     padding: 0 10px;

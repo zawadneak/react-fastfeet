@@ -9,27 +9,26 @@ import api from '~/services/api';
 
 export function* loadDeliveries({ payload }) {
   try {
-    const { page, q } = payload;
+    const { page, query } = payload;
+
     const response = yield call(api.get, 'delivery', {
-      query: {
+      params: {
         page: page || 1,
-        q: q || '%',
+        q: query || '%',
       },
     });
 
     yield put(deliverySuccess(response.data));
   } catch (e) {
     toast.error('Error loading deliveries!');
-    console.log(e);
     yield put(deliveryFailure());
   }
 }
 export function* deleteDelivery({ payload }) {
   try {
     const { id } = payload;
-    const response = yield call(api.delete, `delivery/${id}`);
+    yield call(api.delete, `delivery/${id}`);
 
-    console.log(response);
     yield put(deliveryDeleteSuccess(id));
   } catch (e) {
     toast.error('Error deleting!');

@@ -9,7 +9,6 @@ export default function provider(state = INITIAL_STATE, action) {
     switch (action.type) {
       case '@provider/REQUEST': {
         draft.loading = true;
-        console.log(draft.providers);
         break;
       }
       case '@provider/SUCCESS': {

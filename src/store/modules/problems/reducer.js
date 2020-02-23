@@ -25,13 +25,6 @@ export default function problems(state = INITIAL_STATE, action) {
         break;
       }
       case '@problem/CANCEL_SUCCESS': {
-        const { id } = action.payload;
-
-        const index = draft.data.findIndex(item => item.id === id);
-        if (index >= 0) {
-          draft.data.splice(index, 1);
-        }
-
         draft.loading = false;
         break;
       }
