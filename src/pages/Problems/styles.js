@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { darken } from 'polished';
 
 export const Container = styled.div`
   display: flex;
@@ -27,41 +26,6 @@ export const Holder = styled.div`
       font-size: 24px;
       margin: 20px 0px;
       font-family: 'Roboto', sans-serif;
-    }
-  }
-
-  div {
-    width: 100%;
-  }
-
-  div > header {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 10px;
-
-    input {
-      height: 35px;
-      width: 200px;
-      padding: 0px 10px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-    }
-
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 150px;
-      border: 0px;
-      background: #7d40e7;
-      border-radius: 4px;
-      color: #fff;
-      font-weight: bold;
-
-      &:hover {
-        background: ${darken(0.03, '#7d40e7')};
-      }
     }
   }
 `;
@@ -141,14 +105,16 @@ export const Action = styled.div`
     cursor: pointer;
     color: #aaa;
     display: flex;
-    flex-direction: row;
     align-items: center;
     margin: 0px 5px;
     padding: 10px;
     font-size: 14px;
     width: 100px;
-    & + div {
-      border-top: 1px solid #ddd;
+
+    button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
   }
 `;
@@ -161,6 +127,12 @@ export const Pages = styled.div`
   justify-content: center;
   font-family: 'Roboto', sans-serif;
   color: #aaa;
+  cursor: pointer;
+  transition: 1s;
+
+  :hover {
+    color: black;
+  }
 
   strong {
     padding: 0 10px;

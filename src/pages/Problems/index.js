@@ -1,22 +1,34 @@
+/* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from 'react';
 
 import { produce } from 'immer';
 import { useSelector, useDispatch } from 'react-redux';
-import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import {
+  IoIosMore,
+  IoIosSearch,
+  IoIosArrowBack,
+  IoIosArrowForward,
+} from 'react-icons/io';
 import { FaTrashAlt, FaEye } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
-import { problemRequest } from '~/store/modules/problems/actions';
+import {
+  problemRequest,
+  problemCancelRequest,
+} from '~/store/modules/problems/actions';
 
 import { Container, Holder, Table, Action, Pages } from './styles';
 
 export default function Problems() {
   const problemsLoad = useSelector(state => state.problems.data);
   const [problems, setProblems] = useState([]);
+  const [page, setPage] = useState(1);
+  const [input, setInput] = useState('');
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(problemRequest(null, 1));
+    dispatch(problemRequest(1));
   }, []);
 
   useEffect(() => {
@@ -36,6 +48,36 @@ export default function Problems() {
     );
   };
 
+  const handlePageAdd = () => {
+    if (problems.length < 10) {
+      return toast.info('There are no more pages!');
+    }
+    const pageSwitch = page + 1;
+    setPage(page + 1);
+
+    dispatch(problemRequest(pageSwitch));
+  };
+  const handlePageSub = () => {
+    if (page === 1) {
+      return toast.info('This is already the first page!');
+    }
+    const pageSwitch = page - 1;
+    setPage(page - 1);
+
+    console.log(page);
+
+    dispatch(problemRequest(pageSwitch));
+  };
+
+  const handleCancelDelivery = id => {
+    const confirmation = confirm(
+      'Are you sure you want to delete this delivery?'
+    );
+    if (confirmation) {
+      dispatch(problemCancelRequest(id));
+    }
+  };
+
   return (
     <Container>
       <Holder>
@@ -43,13 +85,11 @@ export default function Problems() {
           <h1>Managing Problems</h1>
         </header>
         <div>
-          <header>
-            <input type="text" placeholder={` Search for a delivery`} />
-          </header>
           <Table>
             <thead>
               <tr>
                 <th>Package</th>
+                <th>Name</th>
                 <th>Problem</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
@@ -62,26 +102,34 @@ export default function Problems() {
                       ? `#${item.delivery_id}`
                       : 'Delivery Deleted'}
                   </td>
+                  <td>{item.delivery ? item.delivery.product : ''}</td>
                   <td>{item.description}</td>
                   <td>
                     <button type="button" onClick={() => handleActions(item)}>
                       <IoIosMore size={25} />
                       <Action visible={item.visible}>
                         <div>
-                          <FaEye
-                            size={14}
-                            color="#8E5BE8"
-                            style={{ marginRight: 10 }}
-                          />
-                          <p>See</p>
+                          <button type="button">
+                            <FaEye
+                              size={14}
+                              color="#8E5BE8"
+                              style={{ marginRight: 10 }}
+                            />
+                            <p>See</p>
+                          </button>
                         </div>
                         <div>
-                          <FaTrashAlt
-                            size={14}
-                            color="#DE3B3B"
-                            style={{ marginRight: 10 }}
-                          />
-                          <p>Cancel</p>
+                          <button
+                            type="button"
+                            onClick={() => handleCancelDelivery(item.id)}
+                          >
+                            <FaTrashAlt
+                              size={14}
+                              color="#DE3B3B"
+                              style={{ marginRight: 10 }}
+                            />
+                            <p>Cancel</p>
+                          </button>
                         </div>
                       </Action>
                     </button>
@@ -92,9 +140,9 @@ export default function Problems() {
           </Table>
         </div>
         <Pages>
-          <IoIosArrowBack />
-          <strong>1</strong>
-          <IoIosArrowForward />
+          <IoIosArrowBack onClick={handlePageSub} />
+          <strong>{page}</strong>
+          <IoIosArrowForward onClick={handlePageAdd} />
         </Pages>
       </Holder>
     </Container>

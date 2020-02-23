@@ -1,7 +1,7 @@
-export function problemRequest(query, page) {
+export function problemRequest(page) {
   return {
     type: '@problem/REQUEST',
-    payload: { query, page },
+    payload: { page },
   };
 }
 

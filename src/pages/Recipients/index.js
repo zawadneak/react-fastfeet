@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import { produce } from 'immer';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  IoIosAdd,
-  IoIosMore,
-  IoIosArrowBack,
-  IoIosArrowForward,
-} from 'react-icons/io';
+import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { FaTrashAlt, FaPen } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import TableHeader from '~/components/TableHeader/index';
 import {
   recipientRequest,
   recipientDeleteRequest,
@@ -19,6 +16,8 @@ import { Container, Holder, Table, Action, Pages } from './styles';
 export default function Recipient() {
   const recipientsLoad = useSelector(state => state.recipients.data);
   const [recipients, setRecipients] = useState([]);
+  const [page, setPage] = useState(1);
+  const [input, setInput] = useState('');
 
   const dispatch = useDispatch();
 
@@ -54,6 +53,34 @@ export default function Recipient() {
     }
   };
 
+  const handlePageAdd = () => {
+    if (recipients.length < 10) {
+      return toast.info('There are no more pages!');
+    }
+    const pageSwitch = page + 1;
+    setPage(page + 1);
+
+    dispatch(recipientRequest(null, pageSwitch));
+  };
+  const handlePageSub = () => {
+    if (page === 1) {
+      return toast.info('This is already the first page!');
+    }
+    const pageSwitch = page - 1;
+    setPage(page - 1);
+
+    console.log(page);
+
+    dispatch(recipientRequest(null, pageSwitch));
+  };
+
+  const handleSearch = event => {
+    if (event.key === 'Enter') {
+      dispatch(recipientRequest(input, 1));
+    }
+    setInput('');
+  };
+
   return (
     <Container>
       <Holder>
@@ -61,13 +88,10 @@ export default function Recipient() {
           <h1>Managing Recipients</h1>
         </header>
         <div>
-          <header>
-            <input type="text" placeholder={` Search for a recipient`} />
-            <button type="button">
-              <IoIosAdd size={25} />
-              REGISTER
-            </button>
-          </header>
+          <TableHeader
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={event => handleSearch(event)}
+          />
           <Table>
             <thead>
               <tr>
@@ -119,9 +143,9 @@ export default function Recipient() {
           </Table>
         </div>
         <Pages>
-          <IoIosArrowBack />
+          <IoIosArrowBack onClick={handlePageSub} />
           <strong>1</strong>
-          <IoIosArrowForward />
+          <IoIosArrowForward onClick={handlePageAdd} />
         </Pages>
       </Holder>
     </Container>

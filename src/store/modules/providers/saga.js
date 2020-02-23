@@ -9,35 +9,29 @@ import api from '~/services/api';
 
 export function* loadProviders({ payload }) {
   try {
-    const { page, q } = payload;
+    const { page, query } = payload;
     const response = yield call(api.get, 'provider', {
-      query: {
+      params: {
         page: page || 1,
-        q: q || '%',
+        q: query || '%',
       },
     });
-
-    console.log(response.data);
 
     yield put(providerSuccess(response.data));
   } catch (e) {
     toast.error('Error loading providers!');
-    console.log(e);
     yield put(providerFailure());
   }
 }
 
 export function* deleteProviders({ payload }) {
   try {
-    console.log('test');
     const { id } = payload;
-    const response = yield call(api.delete, `provider/${id}`);
+    yield call(api.delete, `provider/${id}`);
 
-    console.log(response);
     yield put(providerDeleteSuccess(id));
   } catch (e) {
     toast.error('Error deleting!');
-    console.log(e);
     yield put(providerFailure());
   }
 }

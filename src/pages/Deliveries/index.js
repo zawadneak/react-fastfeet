@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 import { produce } from 'immer';
+import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  IoIosAdd,
-  IoIosMore,
-  IoIosArrowBack,
-  IoIosArrowForward,
-} from 'react-icons/io';
+import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { FaEye, FaTrashAlt, FaPen } from 'react-icons/fa';
-import {
-  deliveryRequest,
-  deliveryDeleteRequest,
-} from '~/store/modules/deliveries/actions';
 
 import {
   Container,
@@ -23,15 +15,28 @@ import {
   NameDiv,
   Pages,
 } from './styles';
+import TableHeader from '~/components/TableHeader/index';
+import ConfirmDialog from '~/components/ConfirmDialog/index';
+import DeliveryInfo from '~/components/DeliveryInfo/index';
+import {
+  deliveryRequest,
+  deliveryDeleteRequest,
+} from '~/store/modules/deliveries/actions';
 
 export default function Deliveries() {
   const deliveriesLoad = useSelector(state => state.deliveries.data);
   const [deliveries, setDeliveries] = useState([]);
+  const [page, setPage] = useState(1);
+  const [input, setInput] = useState('');
+  const [confirmModalVisible, setConfirmVisible] = useState(false);
+  const [informationModal, setInformationVisible] = useState(false);
+  const [deliveryModalInfo, setModalInfo] = useState([]);
+  const [deletetionID, setDeletionID] = useState(null);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(deliveryRequest(null, 1));
+    dispatch(deliveryRequest(input, 1));
   }, []);
 
   useEffect(() => {
@@ -52,35 +57,67 @@ export default function Deliveries() {
     );
   };
 
-  const handleDelete = id => {
-    // eslint-disable-next-line no-restricted-globals
-    const confirmation = confirm(
-      'Are you sure you want to delete this delivery?'
-    );
+  const handleDelete = () => {
+    dispatch(deliveryDeleteRequest(deletetionID));
+    setDeletionID(null);
+    setConfirmVisible(false);
+    dispatch(deliveryRequest(input, 1));
+  };
 
-    if (confirmation) {
-      dispatch(deliveryDeleteRequest(id));
+  const handlePageAdd = () => {
+    if (deliveries.length < 10) {
+      return toast.info('There are no more pages!');
     }
+    const pageSwitch = page + 1;
+    setPage(page + 1);
+
+    dispatch(deliveryRequest(input, pageSwitch));
+  };
+  const handlePageSub = () => {
+    if (page === 1) {
+      return toast.info('This is already the first page!');
+    }
+    const pageSwitch = page - 1;
+    setPage(page - 1);
+
+    console.log(page);
+
+    dispatch(deliveryRequest(input, pageSwitch));
+  };
+
+  const handleSearch = event => {
+    if (event.key === 'Enter') {
+      dispatch(deliveryRequest(input, 1));
+    }
+    setInput('');
   };
 
   return (
     <Container>
+      <ConfirmDialog
+        open={confirmModalVisible}
+        handleClose={() => setConfirmVisible(false)}
+        handleConfirm={handleDelete}
+      />
+      <DeliveryInfo
+        open={informationModal}
+        onClose={() => setInformationVisible(false)}
+        item={deliveryModalInfo}
+      />
       <Holder>
         <header>
           <h1>Managing Deliveries</h1>
         </header>
         <div>
-          <header>
-            <input type="text" placeholder={` Search for a delivery`} />
-            <button type="button">
-              <IoIosAdd size={25} />
-              REGISTER
-            </button>
-          </header>
+          <TableHeader
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={event => handleSearch(event)}
+          />
           <Table>
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Product</th>
                 <th>Recipient</th>
                 <th>Provider</th>
                 <th>City</th>
@@ -91,74 +128,86 @@ export default function Deliveries() {
             </thead>
             <tbody>
               {deliveries.map(item => (
-                <tr>
-                  <td>{`#${item.id}`}</td>
-                  <td>{item.destination.name}</td>
-                  <NameDiv>
-                    {item.avatar ? (
-                      <img src={item.provider.avatar.url} />
-                    ) : (
-                      <div>{item.nullImageString}</div>
-                    )}
-                    {item.provider ? item.provider.name : 'NONE'}
-                  </NameDiv>
-                  <td>{item.destination.city}</td>
-                  <td>{item.destination.state}</td>
-                  <Status statusColor={item.statusColor}>
-                    <strong>
-                      <div />
-                      {item.status}
-                    </strong>
-                  </Status>
-                  <td>
-                    <button type="button" onClick={() => handleActions(item)}>
-                      <IoIosMore size={25} />
-                      <Action visible={item.visible}>
-                        <div>
-                          <button type="button">
-                            <FaEye
-                              size={14}
-                              color="#8E5BE8"
-                              style={{ marginRight: 10 }}
-                            />
-                            <p>See</p>
-                          </button>
-                        </div>
-                        <div>
-                          <button type="button">
-                            <FaPen
-                              size={14}
-                              color="#4D85EE"
-                              style={{ marginRight: 10 }}
-                            />
-                            <p>Edit</p>
-                          </button>
-                        </div>
-                        <div>
-                          <button
-                            type="button"
-                            onClick={() => handleDelete(item.id)}
-                          >
-                            <FaTrashAlt
-                              size={14}
-                              color="#DE3B3B"
-                              style={{ marginRight: 10 }}
-                            />
-                            <p>Delete</p>
-                          </button>
-                        </div>
-                      </Action>
-                    </button>
-                  </td>
-                </tr>
+                <>
+                  <tr>
+                    <td>{`#${item.id}`}</td>
+                    <td>{item.product}</td>
+                    <td>{item.destination.name}</td>
+                    <NameDiv>
+                      {item.avatar ? (
+                        <img src={item.provider.avatar.url} />
+                      ) : (
+                        <div>{item.nullImageString}</div>
+                      )}
+                      {item.provider ? item.provider.name : 'NONE'}
+                    </NameDiv>
+                    <td>{item.destination.city}</td>
+                    <td>{item.destination.state}</td>
+                    <Status statusColor={item.statusColor}>
+                      <strong>
+                        <div />
+                        {item.status}
+                      </strong>
+                    </Status>
+                    <td>
+                      <button type="button" onClick={() => handleActions(item)}>
+                        <IoIosMore size={25} />
+                        <Action visible={item.visible}>
+                          <div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setModalInfo(item);
+                                setInformationVisible(true);
+                              }}
+                            >
+                              <FaEye
+                                size={14}
+                                color="#8E5BE8"
+                                style={{ marginRight: 10 }}
+                              />
+                              <p>See</p>
+                            </button>
+                          </div>
+                          <div>
+                            <button type="button">
+                              <FaPen
+                                size={14}
+                                color="#4D85EE"
+                                style={{ marginRight: 10 }}
+                              />
+                              <p>Edit</p>
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setConfirmVisible(true);
+                                setDeletionID(item.id);
+                              }}
+                            >
+                              <FaTrashAlt
+                                size={14}
+                                color="#DE3B3B"
+                                style={{ marginRight: 10 }}
+                              />
+                              <p>Delete</p>
+                            </button>
+                          </div>
+                        </Action>
+                      </button>
+                    </td>
+                  </tr>
+                </>
               ))}
             </tbody>
           </Table>
         </div>
         <Pages>
-          <IoIosArrowBack />
-          <strong>1</strong>
-          <IoIosArrowForward />
+          <IoIosArrowBack onClick={handlePageSub} />
+          <strong>{page}</strong>
+          <IoIosArrowForward onClick={handlePageAdd} />
         </Pages>
       </Holder>
     </Container>
