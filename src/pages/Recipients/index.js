@@ -14,6 +14,7 @@ import {
 import { Container, Holder, Table, Action, Pages } from './styles';
 
 export default function Recipient() {
+  const loading = useSelector(state => state.recipients.loading);
   const recipientsLoad = useSelector(state => state.recipients.data);
   const [recipients, setRecipients] = useState([]);
   const [page, setPage] = useState(1);
@@ -89,6 +90,7 @@ export default function Recipient() {
         </header>
         <div>
           <TableHeader
+            loading={loading}
             onChange={e => setInput(e.target.value)}
             onKeyDown={event => handleSearch(event)}
           />

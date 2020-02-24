@@ -6,6 +6,8 @@ import {
   problemCancelSuccess,
 } from './actions';
 import api from '~/services/api';
+import history from '~/services/history';
+import { signOut } from '~/store/modules/auth/actions';
 
 export function* loadProblems({ payload }) {
   try {
@@ -18,7 +20,12 @@ export function* loadProblems({ payload }) {
 
     yield put(problemSuccess(response.data));
   } catch (e) {
-    toast.error('Error loading problems!');
+    if (e.response.status === 401) {
+      yield put(signOut());
+      history.push('/');
+    } else {
+      toast.error(`Error loading problems! ${e.message}`);
+    }
     yield put(problemFailure());
   }
 }

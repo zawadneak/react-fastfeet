@@ -1,12 +1,18 @@
 import React from 'react';
 
+import { useDispatch } from 'react-redux';
+import { signOut } from '~/store/modules/auth/actions';
 import { Container, Holder, Navigator } from './styles';
 import fastfeet from '~/assets/img/logo.svg';
 import history from '~/services/history';
 
 export default function Header() {
+  const dispatch = useDispatch();
   const handleLogOut = () => {
+    dispatch(signOut());
+
     localStorage.removeItem('persist:fastfeet');
+    history.push('/');
   };
 
   const [, path] = history.location.pathname.split('/');

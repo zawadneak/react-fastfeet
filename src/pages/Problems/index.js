@@ -3,12 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import { produce } from 'immer';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  IoIosMore,
-  IoIosSearch,
-  IoIosArrowBack,
-  IoIosArrowForward,
-} from 'react-icons/io';
+import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { FaTrashAlt, FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
@@ -23,7 +18,6 @@ export default function Problems() {
   const problemsLoad = useSelector(state => state.problems.data);
   const [problems, setProblems] = useState([]);
   const [page, setPage] = useState(1);
-  const [input, setInput] = useState('');
 
   const dispatch = useDispatch();
 

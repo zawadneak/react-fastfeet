@@ -6,6 +6,8 @@ import {
   providerDeleteSuccess,
 } from './actions';
 import api from '~/services/api';
+import history from '~/services/history';
+import { signOut } from '~/store/modules/auth/actions';
 
 export function* loadProviders({ payload }) {
   try {
@@ -19,7 +21,12 @@ export function* loadProviders({ payload }) {
 
     yield put(providerSuccess(response.data));
   } catch (e) {
-    toast.error('Error loading providers!');
+    if (e.response.status === 401) {
+      yield put(signOut());
+      history.push('/');
+    } else {
+      toast.error(`Error loading providers! ${e.message}`);
+    }
     yield put(providerFailure());
   }
 }
