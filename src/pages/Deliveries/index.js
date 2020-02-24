@@ -24,6 +24,7 @@ import {
 } from '~/store/modules/deliveries/actions';
 
 export default function Deliveries() {
+  const loading = useSelector(state => state.deliveries.loading);
   const deliveriesLoad = useSelector(state => state.deliveries.data);
   const [deliveries, setDeliveries] = useState([]);
   const [page, setPage] = useState(1);
@@ -110,6 +111,7 @@ export default function Deliveries() {
         </header>
         <div>
           <TableHeader
+            loading={loading}
             onChange={e => setInput(e.target.value)}
             onKeyDown={event => handleSearch(event)}
           />

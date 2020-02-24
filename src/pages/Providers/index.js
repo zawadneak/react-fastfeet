@@ -15,6 +15,7 @@ import TableHeader from '~/components/TableHeader/index';
 import { Container, Holder, Table, Action, NameDiv, Pages } from './styles';
 
 export default function Provider() {
+  const loading = useSelector(state => state.providers.loading);
   const providerLoad = useSelector(state => state.providers.providers);
   const [providers, setProviders] = useState([]);
   const [page, setPage] = useState(1);
@@ -91,6 +92,7 @@ export default function Provider() {
         </header>
         <div>
           <TableHeader
+            loading={loading}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => handleSearch(e)}
           />

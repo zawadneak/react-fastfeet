@@ -6,6 +6,8 @@ import {
   recipientDeleteSuccess,
 } from './actions';
 import api from '~/services/api';
+import history from '~/services/history';
+import { signOut } from '~/store/modules/auth/actions';
 
 export function* loadRecipient({ payload }) {
   try {
@@ -19,7 +21,12 @@ export function* loadRecipient({ payload }) {
 
     yield put(recipientSuccess(response.data));
   } catch (e) {
-    toast.error('Error loading recipients!');
+    if (e.response.status === 401) {
+      yield put(signOut());
+      history.push('/');
+    } else {
+      toast.error(`Error loading recipients! ${e.message}`);
+    }
     yield put(recipientFailure());
   }
 }

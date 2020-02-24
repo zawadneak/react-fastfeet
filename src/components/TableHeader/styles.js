@@ -1,5 +1,14 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { darken } from 'polished';
+
+const rotation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg)
+  }
+`;
 
 const Header = styled.header`
   display: flex;
@@ -24,6 +33,10 @@ const Header = styled.header`
     border: 1px solid #ddd;
     border-right: 0px #fff;
     background: #fff;
+
+    #loading {
+      animation: ${rotation} 1s ease-in-out 0s infinite;
+    }
   }
   input {
     height: 35px;

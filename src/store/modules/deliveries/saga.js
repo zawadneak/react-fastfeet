@@ -5,6 +5,8 @@ import {
   deliveryFailure,
   deliveryDeleteSuccess,
 } from './actions';
+import history from '~/services/history';
+import { signOut } from '~/store/modules/auth/actions';
 import api from '~/services/api';
 
 export function* loadDeliveries({ payload }) {
@@ -20,7 +22,12 @@ export function* loadDeliveries({ payload }) {
 
     yield put(deliverySuccess(response.data));
   } catch (e) {
-    toast.error('Error loading deliveries!');
+    if (e.response.status === 401) {
+      yield put(signOut());
+      history.push('/');
+    } else {
+      toast.error(`Error loading deliveries! ${e.message}`);
+    }
     yield put(deliveryFailure());
   }
 }

@@ -1,16 +1,20 @@
 import React from 'react';
 
 import { IoIosSearch } from 'react-icons/io';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaSpinner } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import Header from './styles';
 
-export default function TableHeader({ onKeyDown, onChange, onClick }) {
+export default function TableHeader({ onKeyDown, onChange, onClick, loading }) {
   return (
     <Header>
       <div>
         <div>
-          <IoIosSearch size={20} color="#bbb" />
+          {loading ? (
+            <FaSpinner id="loading" size={20} color="#bbb" />
+          ) : (
+            <IoIosSearch size={20} color="#bbb" />
+          )}
         </div>
         <input
           type="text"
@@ -30,4 +34,5 @@ TableHeader.propTypes = {
   onKeyDown: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
