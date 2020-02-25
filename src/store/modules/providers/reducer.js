@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 
 const INITIAL_STATE = {
-  providers: [],
+  data: [],
   loading: false,
 };
 export default function provider(state = INITIAL_STATE, action) {
@@ -12,8 +12,8 @@ export default function provider(state = INITIAL_STATE, action) {
         break;
       }
       case '@provider/SUCCESS': {
-        draft.providers = action.payload.providers;
-        draft.providers.map(item => {
+        draft.data = action.payload.providers;
+        draft.data.map(item => {
           item.visible = false;
           item.nullImageString = item.name.charAt(0);
         });
@@ -27,10 +27,10 @@ export default function provider(state = INITIAL_STATE, action) {
       case '@provider/DELETE_SUCCESS': {
         const { id } = action.payload;
 
-        const index = draft.providers.findIndex(item => item.id === id);
+        const index = draft.data.findIndex(item => item.id === id);
 
         if (index >= 0) {
-          draft.providers.splice(index, 1);
+          draft.data.splice(index, 1);
         }
 
         draft.loading = false;

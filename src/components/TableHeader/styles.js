@@ -59,9 +59,14 @@ const Header = styled.header`
     border-radius: 4px;
     color: #fff;
     font-weight: bold;
+    transition: 0.3s;
+    strong {
+      margin-left: 5px;
+      margin-top: 2px;
+    }
 
     &:hover {
-      background: ${darken(0.03, '#7d40e7')};
+      background: ${darken(0.15, '#7d40e7')};
     }
   }
 `;

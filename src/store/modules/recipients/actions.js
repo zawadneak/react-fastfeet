@@ -38,22 +38,16 @@ export function recipientDeleteFailure() {
   };
 }
 
-export function recipientEditRequest(id) {
+export function recipientEditRequest(id, data) {
   return {
     type: '@recipient/EDIT_REQUEST',
-    payload: { id },
+    payload: { id, data },
   };
 }
 
-export function recipientEditSuccess(id) {
+export function recipientRegisterRequest(data) {
   return {
-    type: '@recipient/EDIT_SUCCESS',
-    payload: { id },
-  };
-}
-
-export function recipientEditFailure() {
-  return {
-    type: '@recipient/EDIT_FAILURE',
+    type: '@recipient/REGISTER_REQUEST',
+    payload: { data },
   };
 }

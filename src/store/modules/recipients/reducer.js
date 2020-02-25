@@ -12,12 +12,13 @@ export default function recipients(state = INITIAL_STATE, action) {
         break;
       }
       case '@recipient/SUCCESS': {
-        draft.data = action.payload.recipients;
-        draft.data.map(item => {
-          item.address = `${item.street} ${item.number} ${item.complement ||
-            ''}- ${item.city},${item.state}`;
-        });
-        console.log(draft);
+        if (action.payload.recipients) {
+          draft.data = action.payload.recipients;
+          draft.data.map(item => {
+            item.address = `${item.street} ${item.number} ${item.complement ||
+              ''}- ${item.city},${item.state}`;
+          });
+        }
         draft.loading = false;
         break;
       }
@@ -37,6 +38,14 @@ export default function recipients(state = INITIAL_STATE, action) {
           draft.data.splice(index, 1);
         }
 
+        draft.loading = false;
+        break;
+      }
+      case '@recipient/REGISTER_REQUEST': {
+        draft.loading = true;
+        break;
+      }
+      case '@recipient/REGISTER_SUCCESS': {
         draft.loading = false;
         break;
       }
