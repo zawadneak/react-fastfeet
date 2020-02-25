@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from 'react';
 
 import { produce } from 'immer';
@@ -16,7 +17,6 @@ import {
   Pages,
 } from './styles';
 import TableHeader from '~/components/TableHeader/index';
-import ConfirmDialog from '~/components/ConfirmDialog/index';
 import DeliveryInfo from '~/components/DeliveryInfo/index';
 import {
   deliveryRequest,
@@ -29,10 +29,8 @@ export default function Deliveries() {
   const [deliveries, setDeliveries] = useState([]);
   const [page, setPage] = useState(1);
   const [input, setInput] = useState('');
-  const [confirmModalVisible, setConfirmVisible] = useState(false);
   const [informationModal, setInformationVisible] = useState(false);
   const [deliveryModalInfo, setModalInfo] = useState([]);
-  const [deletetionID, setDeletionID] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -58,11 +56,12 @@ export default function Deliveries() {
     );
   };
 
-  const handleDelete = () => {
-    dispatch(deliveryDeleteRequest(deletetionID));
-    setDeletionID(null);
-    setConfirmVisible(false);
-    dispatch(deliveryRequest(input, 1));
+  const handleDelete = id => {
+    const confirmation = confirm('Are you sure you want to delete this?');
+    if (confirmation) {
+      dispatch(deliveryDeleteRequest(id));
+      dispatch(deliveryRequest(input, 1));
+    }
   };
 
   const handlePageAdd = () => {
@@ -95,11 +94,6 @@ export default function Deliveries() {
 
   return (
     <Container>
-      <ConfirmDialog
-        open={confirmModalVisible}
-        handleClose={() => setConfirmVisible(false)}
-        handleConfirm={handleDelete}
-      />
       <DeliveryInfo
         open={informationModal}
         onClose={() => setInformationVisible(false)}
@@ -185,8 +179,7 @@ export default function Deliveries() {
                             <button
                               type="button"
                               onClick={() => {
-                                setConfirmVisible(true);
-                                setDeletionID(item.id);
+                                handleDelete(item.id);
                               }}
                             >
                               <FaTrashAlt

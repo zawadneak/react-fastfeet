@@ -16,7 +16,7 @@ import { Container, Holder, Table, Action, NameDiv, Pages } from './styles';
 
 export default function Provider() {
   const loading = useSelector(state => state.providers.loading);
-  const providerLoad = useSelector(state => state.providers.providers);
+  const providerLoad = useSelector(state => state.providers.data);
   const [providers, setProviders] = useState([]);
   const [page, setPage] = useState(1);
   const [input, setInput] = useState('');

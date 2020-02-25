@@ -4,6 +4,7 @@ import {
   recipientSuccess,
   recipientFailure,
   recipientDeleteSuccess,
+  recipientRegisterSuccess,
 } from './actions';
 import api from '~/services/api';
 import history from '~/services/history';
@@ -51,8 +52,38 @@ export function setToken({ payload }) {
   }
 }
 
+export function* registerRecipient({ payload }) {
+  try {
+    const { data } = payload;
+    yield call(api.post, '/recipient', data);
+
+    yield put(recipientSuccess());
+    history.push('/recipients');
+  } catch (e) {
+    toast.error(`Couldn't register recipient! ${e.message}`);
+    yield put(recipientFailure());
+  }
+}
+
+export function* editRecipient({ payload }) {
+  try {
+    const { id, data } = payload;
+
+    yield call(api.put, `/recipient/${id}`, data);
+
+    yield put(recipientSuccess());
+    history.push('/recipients');
+  } catch (e) {
+    console.log(e);
+    toast.error(`Couldn't edit recipient! ${e.message}`);
+    yield put(recipientFailure());
+  }
+}
+
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@recipient/DELETE_REQUEST', deleteRecipient),
   takeLatest('@recipient/REQUEST', loadRecipient),
+  takeLatest('@recipient/REGISTER_REQUEST', registerRecipient),
+  takeLatest('@recipient/EDIT_REQUEST', editRecipient),
 ]);

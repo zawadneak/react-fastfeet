@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { IoIosSearch } from 'react-icons/io';
-import { FaPlus, FaSpinner } from 'react-icons/fa';
+import { FaSpinner } from 'react-icons/fa';
+import { GoPlus } from 'react-icons/go';
 import PropTypes from 'prop-types';
 import Header from './styles';
 
@@ -24,8 +25,8 @@ export default function TableHeader({ onKeyDown, onChange, onClick, loading }) {
         />
       </div>
       <button type="button" onClick={onClick}>
-        <FaPlus size={15} style={{ marginRight: 10 }} />
-        REGISTER
+        <GoPlus size={20} />
+        <strong>REGISTER</strong>
       </button>
     </Header>
   );

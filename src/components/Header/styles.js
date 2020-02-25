@@ -35,7 +35,7 @@ export const Navigator = styled(Link)`
   color: #000;
   font-family: 'Roboto', sans-serif;
   opacity: ${props => (props.path ? 1 : 0.5)};
-  transition: 1s;
+  transition: 0.3s;
 
   &:hover {
     opacity: ${props => (props.path ? 1 : 0.65)};

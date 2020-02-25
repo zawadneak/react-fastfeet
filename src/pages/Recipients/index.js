@@ -10,6 +10,7 @@ import {
   recipientRequest,
   recipientDeleteRequest,
 } from '~/store/modules/recipients/actions';
+import history from '~/services/history';
 
 import { Container, Holder, Table, Action, Pages } from './styles';
 
@@ -82,6 +83,14 @@ export default function Recipient() {
     setInput('');
   };
 
+  const handleRegister = () => {
+    history.push('/recipients/register');
+  };
+
+  const handleEdit = id => {
+    history.push(`recipients/edit/${id}`);
+  };
+
   return (
     <Container>
       <Holder>
@@ -93,6 +102,7 @@ export default function Recipient() {
             loading={loading}
             onChange={e => setInput(e.target.value)}
             onKeyDown={event => handleSearch(event)}
+            onClick={handleRegister}
           />
           <Table>
             <thead>
@@ -114,7 +124,10 @@ export default function Recipient() {
                       <IoIosMore size={25} />
                       <Action visible={item.visible}>
                         <div>
-                          <button type="button">
+                          <button
+                            type="button"
+                            onClick={() => handleEdit(item.id)}
+                          >
                             <FaPen
                               size={14}
                               color="#4D85EE"
