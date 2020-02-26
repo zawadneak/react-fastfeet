@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { FaEye, FaTrashAlt, FaPen } from 'react-icons/fa';
+import history from '~/services/history';
 
 import {
   Container,
@@ -80,8 +81,6 @@ export default function Deliveries() {
     const pageSwitch = page - 1;
     setPage(page - 1);
 
-    console.log(page);
-
     dispatch(deliveryRequest(input, pageSwitch));
   };
 
@@ -90,6 +89,14 @@ export default function Deliveries() {
       dispatch(deliveryRequest(input, 1));
     }
     setInput('');
+  };
+
+  const handleRegister = () => {
+    history.push('/deliveries/register');
+  };
+
+  const handleEdit = id => {
+    history.push(`deliveries/edit/${id}`);
   };
 
   return (
@@ -108,6 +115,7 @@ export default function Deliveries() {
             loading={loading}
             onChange={e => setInput(e.target.value)}
             onKeyDown={event => handleSearch(event)}
+            onClick={handleRegister}
           />
           <Table>
             <thead>
@@ -128,17 +136,17 @@ export default function Deliveries() {
                   <tr>
                     <td>{`#${item.id}`}</td>
                     <td>{item.product}</td>
-                    <td>{item.destination.name}</td>
+                    <td>{item.destination ? item.destination.name : ''}</td>
                     <NameDiv>
-                      {item.avatar ? (
+                      {item.provider && item.provider.avatar ? (
                         <img src={item.provider.avatar.url} />
                       ) : (
                         <div>{item.nullImageString}</div>
                       )}
                       {item.provider ? item.provider.name : 'NONE'}
                     </NameDiv>
-                    <td>{item.destination.city}</td>
-                    <td>{item.destination.state}</td>
+                    <td>{item.destination ? item.destination.city : ''}</td>
+                    <td>{item.destination ? item.destination.state : ''}</td>
                     <Status statusColor={item.statusColor}>
                       <strong>
                         <div />
@@ -166,7 +174,10 @@ export default function Deliveries() {
                             </button>
                           </div>
                           <div>
-                            <button type="button">
+                            <button
+                              type="button"
+                              onClick={() => handleEdit(item.id)}
+                            >
                               <FaPen
                                 size={14}
                                 color="#4D85EE"

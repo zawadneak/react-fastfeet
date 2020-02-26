@@ -12,11 +12,13 @@ export default function provider(state = INITIAL_STATE, action) {
         break;
       }
       case '@provider/SUCCESS': {
-        draft.data = action.payload.providers;
-        draft.data.map(item => {
-          item.visible = false;
-          item.nullImageString = item.name.charAt(0);
-        });
+        if (action.payload.providers) {
+          draft.data = action.payload.providers;
+          draft.data.map(item => {
+            item.visible = false;
+            item.nullImageString = item.name.charAt(0);
+          });
+        }
         draft.loading = false;
         break;
       }
@@ -38,6 +40,10 @@ export default function provider(state = INITIAL_STATE, action) {
       }
       case '@provider/FAILURE': {
         draft.loading = false;
+        break;
+      }
+      case '@provider/REGISTER_REQUEST': {
+        draft.loading = true;
         break;
       }
       default:

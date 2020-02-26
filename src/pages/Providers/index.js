@@ -6,6 +6,7 @@ import { produce } from 'immer';
 import { toast } from 'react-toastify';
 import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { FaTrashAlt, FaPen } from 'react-icons/fa';
+import history from '~/services/history';
 import {
   providerRequest,
   providerDeleteRequest,
@@ -84,6 +85,13 @@ export default function Provider() {
     setInput('');
   };
 
+  const handleRegister = () => {
+    history.push('/providers/register');
+  };
+  const handleEdition = id => {
+    history.push(`providers/edit/${id}`);
+  };
+
   return (
     <Container>
       <Holder>
@@ -95,6 +103,7 @@ export default function Provider() {
             loading={loading}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => handleSearch(e)}
+            onClick={handleRegister}
           />
           <Table>
             <thead>
@@ -124,7 +133,10 @@ export default function Provider() {
                       <IoIosMore size={25} />
                       <Action visible={item.visible}>
                         <div>
-                          <button type="button">
+                          <button
+                            type="button"
+                            onClick={() => handleEdition(item.id)}
+                          >
                             <FaPen
                               size={14}
                               color="#4D85EE"

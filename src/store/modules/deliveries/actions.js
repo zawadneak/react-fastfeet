@@ -32,28 +32,25 @@ export function deliveryDeleteSuccess(id) {
   };
 }
 
-export function deliveryDeleteFailure() {
-  return {
-    type: '@delivery/DELETE_FAILURE',
-  };
-}
-
-export function deliveryEditRequest(id) {
+export function deliveryEditRequest({
+  id,
+  product,
+  recipient_id,
+  provider_id,
+}) {
   return {
     type: '@delivery/EDIT_REQUEST',
-    payload: { id },
+    payload: { product, recipient_id, provider_id, id },
   };
 }
 
-export function deliveryEditSuccess(id) {
+export function deliveryRegisterRequest({
+  product,
+  recipient_id,
+  provider_id,
+}) {
   return {
-    type: '@delivery/EDIT_SUCCESS',
-    payload: { id },
-  };
-}
-
-export function deliveryEditFailure() {
-  return {
-    type: '@delivery/EDIT_FAILURE',
+    type: '@delivery/REGISTER_REQUEST',
+    payload: { product, recipient_id, provider_id },
   };
 }

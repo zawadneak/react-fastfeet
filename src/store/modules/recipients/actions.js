@@ -1,7 +1,7 @@
-export function recipientRequest(query, page) {
+export function recipientRequest(query, page, limit) {
   return {
     type: '@recipient/REQUEST',
-    payload: { query, page },
+    payload: { query, page, limit },
   };
 }
 

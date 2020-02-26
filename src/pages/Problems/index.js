@@ -6,6 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IoIosMore, IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { FaTrashAlt, FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import LinesEllipsis from 'react-lines-ellipsis';
+
+import ProblemInfo from '~/components/ProblemInfo/index';
 
 import {
   problemRequest,
@@ -18,6 +21,8 @@ export default function Problems() {
   const problemsLoad = useSelector(state => state.problems.data);
   const [problems, setProblems] = useState([]);
   const [page, setPage] = useState(1);
+  const [description, setDescription] = useState('');
+  const [problemVisible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -28,6 +33,7 @@ export default function Problems() {
   useEffect(() => {
     setProblems(problemsLoad);
   }, [problemsLoad]);
+
   const handleActions = ({ id, visible }) => {
     setProblems(
       produce(problems, draft => {
@@ -72,8 +78,22 @@ export default function Problems() {
     }
   };
 
+  const handleProblem = description => {
+    setDescription(description);
+    setVisible(true);
+  };
+
+  const handleClose = () => {
+    setVisible(false);
+    setDescription('');
+  };
   return (
     <Container>
+      <ProblemInfo
+        description={description}
+        open={problemVisible}
+        onClose={handleClose}
+      />
       <Holder>
         <header>
           <h1>Managing Problems</h1>
@@ -83,7 +103,6 @@ export default function Problems() {
             <thead>
               <tr>
                 <th>Package</th>
-                <th>Name</th>
                 <th>Problem</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
@@ -96,14 +115,22 @@ export default function Problems() {
                       ? `#${item.delivery_id}`
                       : 'Delivery Deleted'}
                   </td>
-                  <td>{item.delivery ? item.delivery.product : ''}</td>
-                  <td>{item.description}</td>
+                  <td>
+                    <LinesEllipsis
+                      text={item.description}
+                      maxLine="1"
+                      ellipsis="..."
+                    />
+                  </td>
                   <td>
                     <button type="button" onClick={() => handleActions(item)}>
                       <IoIosMore size={25} />
                       <Action visible={item.visible}>
                         <div>
-                          <button type="button">
+                          <button
+                            type="button"
+                            onClick={() => handleProblem(item.description)}
+                          >
                             <FaEye
                               size={14}
                               color="#8E5BE8"

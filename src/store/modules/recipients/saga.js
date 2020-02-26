@@ -12,11 +12,12 @@ import { signOut } from '~/store/modules/auth/actions';
 
 export function* loadRecipient({ payload }) {
   try {
-    const { page, query } = payload;
+    const { page, query, limit } = payload;
     const response = yield call(api.get, 'recipient', {
       params: {
         page: page || 1,
         q: query || '%',
+        limit: limit || null,
       },
     });
 
@@ -74,8 +75,11 @@ export function* editRecipient({ payload }) {
     yield put(recipientSuccess());
     history.push('/recipients');
   } catch (e) {
-    console.log(e);
-    toast.error(`Couldn't edit recipient! ${e.message}`);
+    if (e.response.data.error) {
+      toast.error(`Couldn't edit! ${e.response.data.error}`);
+    } else {
+      toast.error(`Couldn't edit recipient!`);
+    }
     yield put(recipientFailure());
   }
 }
