@@ -10,11 +10,13 @@
 </p>
 
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/lucascassilha/node-fastfeet?color=green&style=plastic">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/lucascassilha/react-fastfeet?color=green">
   
-   <img alt="GitHub package size" src="https://img.shields.io/github/repo-size/lucascassilha/react-fastfeet?color=green">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/lucascassilha/react-fastfeet?color=green">
+   
+  <img alt="GitHub package size" src="https://img.shields.io/github/repo-size/lucascassilha/react-fastfeet?color=green">
 
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361?style=plastic">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
 
 </p>
 
