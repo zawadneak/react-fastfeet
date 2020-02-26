@@ -83,6 +83,10 @@ export const Table = styled.table`
             opacity: 1;
           }
         }
+
+        p {
+          display: block;
+        }
       }
     }
   }

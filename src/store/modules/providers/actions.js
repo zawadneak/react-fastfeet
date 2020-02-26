@@ -1,7 +1,7 @@
-export function providerRequest(query, page) {
+export function providerRequest(query, page, limit) {
   return {
     type: '@provider/REQUEST',
-    payload: { query, page },
+    payload: { query, page, limit },
   };
 }
 
@@ -28,5 +28,19 @@ export function providerDeleteSuccess(id) {
 export function providerFailure() {
   return {
     type: '@provider/FAILURE',
+  };
+}
+
+export function providerRegisterRequest(name, email, fileID) {
+  return {
+    type: '@provider/REGISTER_REQUEST',
+    payload: { name, email, fileID },
+  };
+}
+
+export function providerEditRequest(id, name, email, fileID) {
+  return {
+    type: '@provider/EDIT_REQUEST',
+    payload: { id, name, email, fileID },
   };
 }

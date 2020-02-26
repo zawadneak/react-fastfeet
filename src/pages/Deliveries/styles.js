@@ -168,6 +168,13 @@ export const NameDiv = styled.td`
     margin-right: 5px;
     color: #a28fd0;
   }
+
+  img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
 `;
 
 export const Pages = styled.div`
