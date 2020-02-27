@@ -118,7 +118,7 @@ $ yarn
 $ yarn start
 ```
 
-After that you can access the page in yout localhost:3000
+After that you can access the page in your localhost:3000
 
 ## :scroll: License
 
