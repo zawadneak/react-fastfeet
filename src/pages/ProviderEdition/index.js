@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoIosImage } from 'react-icons/io';
+import PropTypes from 'prop-types';
 import history from '~/services/history';
 import { Container, Holder, RegisterBox } from './styles';
 import EditButtons from '~/components/EditionButtons/index';
@@ -15,8 +16,8 @@ const schema = Yup.object().shape({
   email: Yup.string().required('Email field is required!'),
 });
 
-export default function ProviderEdition(props) {
-  const { id } = props.match.params;
+export default function ProviderEdition({ match }) {
+  const { id } = match.params;
   const providerLoad = useSelector(state => state.providers.data);
   const loading = useSelector(state => state.providers.loading);
   const [itemInformation, setItem] = useState({});
@@ -46,8 +47,8 @@ export default function ProviderEdition(props) {
     dispatch(providerEditRequest(id, name, email, fileID));
   };
 
-  const handleFileUpload = file => {
-    const data = new Blob([file], { type: 'image/png' });
+  const handleFileUpload = files => {
+    const data = new Blob([files], { type: 'image/png' });
     dispatch(fileUploadRequest(data));
   };
 
@@ -125,3 +126,7 @@ export default function ProviderEdition(props) {
     </Container>
   );
 }
+
+ProviderEdition.propTypes = {
+  match: PropTypes.objectOf(PropTypes.object).isRequired,
+};

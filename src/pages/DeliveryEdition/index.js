@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import PropTypes from 'prop-types';
 import history from '~/services/history';
 import { Container, Holder, RegisterBox } from './styles';
 import EditButtons from '~/components/EditionButtons/index';
@@ -16,8 +17,8 @@ const schema = Yup.object().shape({
   product: Yup.string().required(),
 });
 
-export default function DeliveryRegister(props) {
-  const { id } = props.match.params;
+export default function DeliveryEdition({ match }) {
+  const { id } = match.params;
   const loading = useSelector(state => state.deliveries.loading);
   const deliveriesLoad = useSelector(state => state.deliveries.data);
   const recipientLoad = useSelector(state => state.recipients.data);
@@ -124,3 +125,7 @@ export default function DeliveryRegister(props) {
     </Container>
   );
 }
+
+DeliveryEdition.propTypes = {
+  match: PropTypes.objectOf(PropTypes.object).isRequired,
+};

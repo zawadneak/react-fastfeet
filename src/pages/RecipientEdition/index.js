@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import history from '~/services/history';
 import { Container, Holder, RegisterBox, StreetInput } from './styles';
 import EditButtons from '~/components/EditionButtons/index';
-import {
-  recipientEditRequest,
-  recipientRequest,
-} from '~/store/modules/recipients/actions';
+import { recipientEditRequest } from '~/store/modules/recipients/actions';
 
 const schema = Yup.object().shape({
   name: Yup.string(),
@@ -23,8 +21,8 @@ const schema = Yup.object().shape({
   postalCode: Yup.string(),
 });
 
-export default function RecipientEdition(props) {
-  const { id } = props.match.params;
+export default function RecipientEdition({ match }) {
+  const { id } = match.params;
   const recipientsLoad = useSelector(state => state.recipients.data);
   const [itemInformation, setItem] = useState({});
 
@@ -102,7 +100,7 @@ export default function RecipientEdition(props) {
               </div>
               <div>
                 <strong>Postal Code</strong>
-                <Input type="text" name="postalCode" />
+                <Input type="text" name="postalCode" placeholder="00.000-000" />
               </div>
             </div>
           </RegisterBox>
@@ -111,3 +109,7 @@ export default function RecipientEdition(props) {
     </Container>
   );
 }
+
+RecipientEdition.propTypes = {
+  match: PropTypes.objectOf(PropTypes.object).isRequired,
+};
