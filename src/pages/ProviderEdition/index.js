@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
@@ -35,8 +35,6 @@ export default function ProviderEdition({ match }) {
     setItem(find[0]);
   }, [providerLoad]);
 
-  let upload = 'inputRef';
-
   const handleClose = () => {
     history.push('/providers');
   };
@@ -51,6 +49,8 @@ export default function ProviderEdition({ match }) {
     const data = new Blob([files], { type: 'image/png' });
     dispatch(fileUploadRequest(data));
   };
+
+  const uploadRef = useRef();
 
   return (
     <Container>
@@ -75,13 +75,13 @@ export default function ProviderEdition({ match }) {
                     <button
                       type="button"
                       name="file"
-                      onClick={() => upload.click()}
+                      onClick={() => uploadRef.click()}
                     >
                       <input
                         type="file"
                         id="file"
                         name="file"
-                        ref={ref => (upload = ref)}
+                        ref={uploadRef}
                         style={{ display: 'none' }}
                         onChange={e => handleFileUpload(e.target.files[0])}
                       />
@@ -91,13 +91,13 @@ export default function ProviderEdition({ match }) {
                     <button
                       type="button"
                       name="file"
-                      onClick={() => upload.click()}
+                      onClick={() => uploadRef.click()}
                     >
                       <input
                         type="file"
                         id="file"
                         name="file"
-                        ref={ref => (upload = ref)}
+                        ref={uploadRef}
                         style={{ display: 'none' }}
                       />
 
