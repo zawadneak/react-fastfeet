@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
@@ -23,8 +23,6 @@ export default function ProviderRegister() {
   const loading = useSelector(state => state.providers.loading);
   const dispatch = useDispatch();
 
-  let upload = 'inputRef';
-
   // data contains name,street,number,complement,city,state,postalCode
   const handleSubmit = ({ name, email }) => {
     const fileID = file.id || null;
@@ -32,10 +30,12 @@ export default function ProviderRegister() {
     dispatch(providerRegisterRequest(name, email, fileID));
   };
 
-  const handleFileUpload = file => {
-    const data = new Blob([file], { type: 'image/png' });
+  const handleFileUpload = files => {
+    const data = new Blob([files], { type: 'image/png' });
     dispatch(fileUploadRequest(data));
   };
+
+  const uploadRef = useRef();
 
   return (
     <Container>
@@ -54,13 +54,13 @@ export default function ProviderRegister() {
                 <button
                   type="button"
                   name="file"
-                  onClick={() => upload.click()}
+                  onClick={() => uploadRef.click()}
                 >
                   <input
                     type="file"
                     id="file"
                     name="file"
-                    ref={ref => (upload = ref)}
+                    ref={uploadRef}
                     style={{ display: 'none' }}
                     onChange={e => handleFileUpload(e.target.files[0])}
                   />
