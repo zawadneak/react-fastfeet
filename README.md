@@ -24,7 +24,7 @@
 :rocket: The Challenge
 ------------------
 This challenge was proposed at a [**Rocketseat**](https://rocketseat.com.br/) GoSack bootcamp! The main objective is creating a 
-front-end application for a imaginary delivery company. The back-end NodeJS server can be seen [here](https://github.com/lucascassilha/node-fastfeet)
+front-end application for a imaginary delivery company. The back-end NodeJS server can be seen [here](https://github.com/lucascassilha/node-fastfeet) and the moblie application [here](https://github.com/lucascassilha/react-native-fastfeet)
 
 The challenge GitHub page can be seen [here](https://github.com/Rocketseat/bootcamp-gostack-desafio-09#desafio-09-front-end-do-meetapp)
 (Brazilian Portuguese)
